@@ -2,7 +2,8 @@ import numpy as np
 from isaacsim import SimulationApp
 import torch
 import sys
-sys.path.append("/home/isaac/GarmentLab")
+# sys.path.append("/home/isaac/GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 simulation_app = SimulationApp({"headless": False})
 import numpy as np
 from omni.isaac.core.utils.types import ArticulationAction

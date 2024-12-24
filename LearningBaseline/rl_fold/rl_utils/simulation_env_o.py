@@ -28,7 +28,7 @@ from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig
 from Env.Config.DeformableConfig import DeformableConfig
 
-class AffordanceEnv(BaseEnv):
+class SimEnv(BaseEnv):
     def __init__(self,garment_config:GarmentConfig=None,franka_config:FrankaConfig=None,Deformable_Config:DeformableConfig=None, task_config = None):
         BaseEnv.__init__(self)
         if garment_config is None:
@@ -48,13 +48,14 @@ class AffordanceEnv(BaseEnv):
             particle_system = garment.get_particle_system()
         self.control=Control(self.world,self.robots,self.garment)
         self.rigid = RigidAfford()
-        self.target_point = np.array(task_config["target_point"])
+        self.block_num = task_config["block_num"]
+        self.target_point = np.array(task_config["target_point"]).reshape(-1,self.block_num,3)
         self.task_name = task_config["task_name"]
         self.garment_name = task_config["garment_name"]
 
 
         # self.root_path = f"/home/sim/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
-        self.root_path = f"D:\\sim\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
+        self.root_path = f"D:\\isaac\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
         if not os.path.exists(self.root_path):
             os.mkdir(self.root_path)
 
@@ -74,39 +75,49 @@ class AffordanceEnv(BaseEnv):
             self.world.step()
         # point=self.allocate_point(0, save_path=self.trial_path)
         action = action.reshape(-1)
-        action += self.centroid
+        action_1 = action[:3]
+        action_2 = action[3:]
+        action_1 += self.centroid
+        action_2 += self.centroid
 
-        action = self.get_point(action)
-        particles = self.get_cloth_in_world_pose()
-        point_dist = np.linalg.norm(particles[self.sel_particle_index] - action)
-        reward = self.compute_reward(point_dist) if not eval_succ else self.compute_succ(point_dist)
-        
-        self.control.grasp(pos=[action],ori=[None],flag=[True], wo_gripper=True)
-        self.control.move(pos=[self.target_point],ori=[None],flag=[True])
-        # self.control.move(pos=[self.target_point+np.array([0.1,0,0])],ori=[None],flag=[True])
-        for _ in range(100):
+        action_1 = self.get_point(action_1)
+        action_2 = self.get_point(action_2)
+
+
+        reward_action = self.compute_reward_action(action_1, action_2)
+
+        self.control.grasp(pos=[action_1, action_2],ori=[None, None],flag=[True, True], wo_gripper=True)
+        for idx in range(self.target_point.shape[0]):
+            self.control.move(pos=[self.target_point[idx,0],self.target_point[idx,1]],ori=[None, None],flag=[True, True])
+
+        for _ in range(150):
             self.world.step()
-        final_data=self.garment[0].get_vertices_positions()
-        # reward = self.compute_reward(final_data)
-        self.control.ungrasp([False])
+
+        reward_result = self.compute_reward_result()
+        reward = reward_action * 0.8 + reward_result * 0.2
+        self.control.ungrasp([False, False])
         for _ in range(10):
             self.world.step()
         self.world.stop()
         if eval_succ:
-            succ_flag = True if reward > 0 else False
+            succ_flag = True if (reward_action[0] > 0) and (reward_action[1] > 0) else False
             return None, succ_flag, np.array([True]), None
-        return None, reward, np.array([True]), None
+        return None, reward_action, np.array([True]), None
 
 
-    # def compute_reward(self, final_data):
-    #     error = np.linalg.norm((self.succ_data- final_data) * np.array([0.2,0.2,2]), ord = 2)/final_data.shape[0]
-    #     reward = 0.3 - error
-    #     if reward < 0:
-    #         return reward
-    #     else:
-    #         return 1/(0.4 - reward)
+    def compute_reward_action(self, action_1, action_2):
+        particles = self.get_cloth_in_world_pose()
+        error_1 = np.linalg.norm(particles[self.sel_particle_index_1] - action_1) 
+        error_2 = np.linalg.norm(particles[self.sel_particle_index_2] - action_2) 
+        reward_1 = 0.1 - error_1
+        reward_2 = 0.1 - error_2
+        reward_1 = reward_1 if reward_1 < 0 else 1/(0.2 - reward_1)
+        reward_2 = reward_2 if reward_2 < 0 else 1/(0.2 - reward_2)
+        return np.array([reward_1, reward_2])
 
-    def compute_reward(self, error):
+    def compute_reward_result(self):
+        final_data = self.get_cloth_in_world_pose()
+        error = np.linalg.norm((self.succ_data- final_data), ord = 2)/final_data.shape[0]
         reward = 0.2 - error
         if reward < 0:
             return reward
@@ -145,29 +156,32 @@ class AffordanceEnv(BaseEnv):
             self.world.step()
         if debug:
             self.wait()
-        point=np.array(assign_point)
+        point_1 = np.array(assign_point[:3])
+        point_2 = np.array(assign_point[3:])
         start_data=self.get_cloth_in_world_pose()
         if log:
             np.savetxt("start_data.txt", start_data)
-        dist = np.linalg.norm(start_data - point[None,:], axis = -1)
-        self.sel_particle_index = np.argmin(dist, axis=0)
-        self.control.grasp(pos=[point],ori=[None],flag=[True], wo_gripper=wo_gripper)
-        self.control.move(pos=[self.target_point],ori=[None],flag=[True])
-        # self.control.move(pos=[self.target_point+np.array([0.1,0,0])],ori=[None],flag=[True])
+        dist_1 = np.linalg.norm(start_data - point_1[None,:], axis = -1)
+        dist_2 = np.linalg.norm(start_data - point_2[None,:], axis = -1)
+        self.sel_particle_index_1 = np.argmin(dist_1, axis=0)
+        self.sel_particle_index_2 = np.argmin(dist_2, axis=0)
+        self.control.grasp(pos=[point_1, point_2],ori=[None, None],flag=[True, True], wo_gripper=wo_gripper)
+        for idx in range(self.target_point.shape[0]):
+            self.control.move(pos=[self.target_point[idx,0],self.target_point[idx,1]],ori=[None, None],flag=[True, True])
+
         for _ in range(150):
             self.world.step()
-        final_data=self.garment[0].get_vertices_positions()
-        final_path=self.model_path
+
     
         finish_data=self.get_cloth_in_world_pose()
         if log:
             np.savetxt("finish_data.txt", finish_data)
 
-        np.save(final_path,final_data)
-        self.control.ungrasp([False])
+
+        self.control.ungrasp([False, False])
         for _ in range(10):
             self.world.step()
-        self.succ_data = final_data
+        self.succ_data = self.get_cloth_in_world_pose()
 
     def get_cloth_in_world_pose(self):
         particle_positions = self.garment[0].get_vertices_positions()

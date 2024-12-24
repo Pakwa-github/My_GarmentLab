@@ -201,7 +201,7 @@ def quat_from_rotation_matrix(m):
     """
     Construct a 3D rotation from a valid 3x3 rotation matrices.
     Reference can be found here:
-    http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche52.html
+    http:\\\\www.cg.info.hiroshima-cu.ac.jp\\~miyazaki\\knowledge\\teche52.html
 
     :param m: 3x3 orthogonal rotation matrices.
     :type m: Tensor

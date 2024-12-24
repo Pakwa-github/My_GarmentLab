@@ -47,7 +47,7 @@ except ImportError as e:
         )
     )
     print(
-        "FBX tools must be installed from https://help.autodesk.com/view/FBX/2020/ENU/?guid=FBX_Developer_Help_scripting_with_python_fbx_installing_python_fbx_html"
+        "FBX tools must be installed from https:\\\\help.autodesk.com\\view\\FBX\\2020\\ENU\\?guid=FBX_Developer_Help_scripting_with_python_fbx_installing_python_fbx_html"
     )
 
 
@@ -139,7 +139,7 @@ def fbx_to_npy(file_name_in, root_joint_name, fps):
                 raise ValueError(
                     "Different X, Y and Z scaling. Unsure how this should be handled. "
                     "To solve this, look at this link and try to upgrade the script "
-                    "http://help.autodesk.com/view/FBX/2017/ENU/?guid=__files_GUID_10CDD"
+                    "http:\\\\help.autodesk.com\\view\\FBX\\2017\\ENU\\?guid=__files_GUID_10CDD"
                     "63C_79C1_4F2D_BB28_AD2BE65A02ED_htm"
                 )
             # Adjust the array for scaling

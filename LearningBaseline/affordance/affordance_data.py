@@ -9,7 +9,7 @@ import yaml
 
 if __name__=="__main__":
 
-    filename = "/home/isaac/GarmentLab/LearningBaseline/affordance/config/config_5.yaml"
+    filename = "D:\\isaac\\GarmentLab\\LearningBaseline\\affordance\\config\\config_5.yaml"
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
 
@@ -28,4 +28,5 @@ if __name__=="__main__":
     
 
     while 1:
+        print("1..")    # 好像并不会打印
         env.step()

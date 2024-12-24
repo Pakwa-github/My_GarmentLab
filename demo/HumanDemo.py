@@ -1,5 +1,6 @@
 import sys
-sys.path.append("/home/isaac/GarmentLab")
+# sys.path.append("/home/isaac/GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 from Env.env.HumanEnv import HumanEnv
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -8,13 +9,13 @@ import numpy as np
 
 if __name__=="__main__":
     
-    config0 = GarmentConfig(usd_path="/home/isaac/GarmentLab/Assets/Garment/Hat/HA_Hat007/HA_Hat007_obj.usd")
+    config0 = GarmentConfig(usd_path="D:\\isaac\\GarmentLab\\Assets\\Garment\\Hat\\HA_Hat007\\HA_Hat007_obj.usd")
     config0.pos = np.array([-0.62169,-0.5502,-0.1472])
     config0.ori = np.array([0.70711,0.70711,0.0,0.0])
     config0.scale = np.array([0.0075, 0.0075, 0.0075])
     config0.particle_contact_offset = 0.01
 
-    config1 = GarmentConfig(usd_path="/home/isaac/GarmentLab/Assets/Garment/Hat/HA_Hat007/HA_Hat007_obj.usd")
+    config1 = GarmentConfig(usd_path="D:\\isaac\\GarmentLab\\Assets\\Garment\\Hat\\HA_Hat007\\HA_Hat007_obj.usd")
     config1.pos = np.array([-0.62169,0.54238,0.4472])
     config1.ori = np.array([0.70711,0.70711,0.0,0.0])
     config1.scale = np.array([0.0075, 0.0075, 0.0075])
@@ -63,7 +64,8 @@ if __name__=="__main__":
     env.control.move([np.array([-0.05975,0.00617,1.0145]),np.array([-0.63344,0.42617,1.50152]),],[None,np.array([np.pi,0,0])],[False,True])
     env.control.move([np.array([-0.05975,0.00617,1.0145]),np.array([-0.05975,0.00617,1.0145]),],[None,None],[False,True])
     final_pts = env.garment.get_vertice_positions()
-    np.savetxt("/home/isaac/GarmentLab/standard_pts.txt",final_pts)
+    # np.savetxt("/home/isaac/GarmentLab/standard_pts.txt",final_pts)
+    np.savetxt("D:\\isaac\\GarmentLab\\standard_pts.txt",final_pts)
     
     # env.control.ungrasp([False,False])
     # env.control.grasp([np.array([0,-0.3,0.04]),np.array([0,-0.6,0.02])],[None,None],[True,True])

@@ -1,5 +1,7 @@
 import sys
-sys.path.append("/home/sim/GarmentLab")
+# sys.path.append("/home/sim/GarmentLab")
+sys.path.append("D:\\sim\\GarmentLab")
+
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -8,9 +10,9 @@ import yaml
 import torch
 from rl_utils.ppo import PPO
 from rl_utils.rl_env import RlEnvBase
-from rl_utils.task_defne import FoldTask
-from rl_utils.simulation_env import SimEnv
 
+from rl_utils.simulation_env import SimEnv
+from rl_utils.task_defne import FoldTask
 
 
 def save(
@@ -43,11 +45,12 @@ def save(
 
 if __name__=="__main__":
 
-    mode = "eval"
+    mode = "train"
 
     assert mode in ["train", "eval"]
 
-    filename = "/home/sim/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
+    # filename = "/home/sim/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
+    filename = "D:\\isaac\\GarmentLab\\LearningBaseline\\rl_fold\\config\\config.yaml"
 
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)

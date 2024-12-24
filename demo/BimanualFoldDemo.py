@@ -7,7 +7,7 @@ import numpy as np
 
 
 # if __name__=="__main__":
-#     env=BimanualEnv(garment_config=GarmentConfig(usd_path="/home/isaac/GarmentLab/Assets/Garment/Trousers/Long/PL_059/PL_059_obj.usd",pos=np.array([0.3317,-0.5,0.3]),scale=np.array([0.006,0.006,0.006])))
+#     env=BimanualEnv(garment_config=GarmentConfig(usd_path="D:\\isaac\\GarmentLab\\Assets\\Garment\\Trousers\\Long\\PL_059\\PL_059_obj.usd",pos=np.array([0.3317,-0.5,0.3]),scale=np.array([0.006,0.006,0.006])))
 #     env.reset()
 #     env.control.robot_reset()
 #     env.control.grasp([np.array([0.29389,-0.38999,0.015]),np.array([0.29736,-0.62,0.015])],[None,None],[True,True])
@@ -28,7 +28,7 @@ import numpy as np
 #         env.step()
 
 if __name__=="__main__":
-    garment_config=GarmentConfig(usd_path="/home/isaac/GarmentLab/Assets/Garment/Trousers/Long/PL_059/PL_059_obj.usd",pos=np.array([0.3317,-0.5,0.3]),scale=np.array([0.006,0.006,0.006]))
+    garment_config=GarmentConfig(usd_path="D:\\isaac\\GarmentLab\\Assets\\Garment\\Trousers\\Long\\PL_059\\PL_059_obj.usd",pos=np.array([0.3317,-0.5,0.3]),scale=np.array([0.006,0.006,0.006]))
     env=BimanualEnv(garment_config=[garment_config])
     env.reset()
     env.control.robot_reset()
@@ -50,5 +50,3 @@ if __name__=="__main__":
     env.control.robot_goto_position([np.array([-0.0,-0.2,0.22]),None],[None,None],[True,True])
     while 1:
         env.step()
-
-        

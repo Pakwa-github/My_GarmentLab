@@ -2,10 +2,12 @@ import numpy as np
 from isaacsim import SimulationApp
 import torch
 import sys
-sys.path.append("/home/isaac/GarmentLab")
+# sys.path.append("/home/isaac/GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 simulation_app = SimulationApp({"headless": False})
 import numpy as np
-sys.path.append("/home/isaac/GarmentLab")
+# sys.path.append("/home/isaac/GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 from Env.Utils.transforms import euler_angles_to_quat
 import torch
 from Env.Utils.transforms import quat_diff_rad

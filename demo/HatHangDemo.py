@@ -1,5 +1,6 @@
 import sys
-sys.path.append("/home/isaac/GarmentLab")
+# sys.path.append("/home/isaac/GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 from Env.env.DeformableEnv import DeformableEnv
 
 from Env.Config.GarmentConfig import GarmentConfig

@@ -4,7 +4,8 @@ import os
 import sys
 import time
 from typing import List, Optional, Tuple
-sys.path.append("/home/isaac/projects/shadow_robot/base/src/sr_interface/shadow-hand-ros-inside/src")
+# sys.path.append("/home/isaac/projects/shadow_robot/base/src/sr_interface/shadow-hand-ros-inside/src")
+sys.path.append("D:\\isaac\\projects\\shadow_robot\\base\\src\\sr_interface\\shadow-hand-ros-inside\\src")
 import numpy as np
 from align import best_fit_transform
 from const import HAND_KEYPOINT_NAMES, HAND_VISULIZATION_LINKS

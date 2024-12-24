@@ -23,7 +23,7 @@ class Dexbimanual(BaseEnv):
         configR = DexConfig(env=self, app=app, translation=np.array([0, -0.5, 0.5]))
         configL = DexConfig(env=self, app=app, translation=np.array([0, 0.5, 0.5]))
         garment_config = GarmentConfig(
-            usd_path="/home/isaac/GarmentLab/Assets/Garment/Tops/Hooded_Lsleeve_FrontOpen/THLO_Jacket065/THLO_Jacket065_obj.usd",
+            usd_path="D:\\isaac\\GarmentLab\\Assets\\Garment\\Tops\\Hooded_Lsleeve_FrontOpen\\THLO_Jacket065\\THLO_Jacket065_obj.usd",
             pos=np.array([1.2, -1, 0.3]), 
             ori=np.array([0, 0, 0]), 
             scale=np.array([0.01, 0.01, 0.01])

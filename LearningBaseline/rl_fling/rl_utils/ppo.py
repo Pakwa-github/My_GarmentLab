@@ -394,12 +394,12 @@ class PPO(OnPolicyAlgorithm):
     """
     Proximal Policy Optimization algorithm (PPO) (clip version)
 
-    Paper: https://arxiv.org/abs/1707.06347
-    Code: This implementation borrows code from OpenAI Spinning Up (https://github.com/openai/spinningup/)
-    https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail and
-    Stable Baselines (PPO2 from https://github.com/hill-a/stable-baselines)
+    Paper: https:\\\\arxiv.org\\abs\\1707.06347
+    Code: This implementation borrows code from OpenAI Spinning Up (https:\\\\github.com\\openai\\spinningup\\)
+    https:\\\\github.com\\ikostrikov\\pytorch-a2c-ppo-acktr-gail and
+    Stable Baselines (PPO2 from https:\\\\github.com\\hill-a\\stable-baselines)
 
-    Introduction to PPO: https://spinningup.openai.com/en/latest/algorithms/ppo.html
+    Introduction to PPO: https:\\\\spinningup.openai.com\\en\\latest\\algorithms\\ppo.html
 
     :param policy: The policy model to use (MlpPolicy, CnnPolicy, ...)
     :param env: The environment to learn from (if registered in Gym, can be str)
@@ -408,7 +408,7 @@ class PPO(OnPolicyAlgorithm):
     :param n_steps: The number of steps to run for each environment per update
         (i.e. rollout buffer size is n_steps * n_envs where n_envs is number of environment copies running in parallel)
         NOTE: n_steps * n_envs must be greater than 1 (because of the advantage normalization)
-        See https://github.com/pytorch/pytorch/issues/29372
+        See https:\\\\github.com\\pytorch\\pytorch\\issues\\29372
     :param batch_size: Minibatch size
     :param n_epochs: Number of epoch when optimizing the surrogate loss
     :param gamma: Discount factor
@@ -432,7 +432,7 @@ class PPO(OnPolicyAlgorithm):
     :param rollout_buffer_kwargs: Keyword arguments to pass to the rollout buffer on creation
     :param target_kl: Limit the KL divergence between updates,
         because the clipping is not enough to prevent large update
-        see issue #213 (cf https://github.com/hill-a/stable-baselines/issues/213)
+        see issue #213 (cf https:\\\\github.com\\hill-a\\stable-baselines\\issues\\213)
         By default, there is no limit on the kl div.
     :param stats_window_size: Window size for the rollout logging, specifying the number of episodes to average
         the reported success rate, mean episode length, and mean reward over
@@ -517,7 +517,7 @@ class PPO(OnPolicyAlgorithm):
         if normalize_advantage:
             assert (
                 batch_size > 1
-            ), "`batch_size` must be greater than 1. See https://github.com/DLR-RM/stable-baselines3/issues/440"
+            ), "`batch_size` must be greater than 1. See https:\\\\github.com\\DLR-RM\\stable-baselines3\\issues\\440"
 
         if self.env is not None:
             # Check that `n_steps * n_envs > 1` to avoid NaN

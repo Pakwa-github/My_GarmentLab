@@ -126,7 +126,7 @@ def umeyama_alignment(
     x: np.ndarray, y: np.ndarray, estimate_scale: bool = True
 ) -> np.ndarray:
     """Implements the Umeyama alignment algorithm.
-    original paper: https://web.stanford.edu/class/cs273/refs/umeyama.pdf
+    original paper: https:\\\\web.stanford.edu\\class\\cs273\\refs\\umeyama.pdf
 
     Args:
         x (np.ndarray): n x m matrix of n m-dimensional points

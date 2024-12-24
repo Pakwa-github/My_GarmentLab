@@ -203,7 +203,7 @@ class Control:
     
     
     
-    def grasp(self,pos:list,ori:list,flag:list[bool],assign_garment = None):
+    def grasp(self,pos:list,ori:list,flag:list[bool],assign_garment = None, wo_gripper = False):
         '''
         grasp_function
         pos: list of robots grasp position
