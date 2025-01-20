@@ -1,8 +1,8 @@
 import sys
-sys.path.append("/home/user/GarmentLab")
+sys.path.append("/home/pakwa/GarmentLab")
 
-sys.path.append("/home/user/GarmentLab/Assets/LeapMotion/leap-sdk-python3")
-sys.path.append("/home/user/GarmentLab/Teleoperation/retarget")
+sys.path.append("/home/pakwa/GarmentLab/Assets/LeapMotion/leap-sdk-python3")
+sys.path.append("/home/pakwa/GarmentLab/Teleoperation/retarget")
 
 import Leap
 import threading

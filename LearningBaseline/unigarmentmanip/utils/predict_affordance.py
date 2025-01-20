@@ -3,8 +3,8 @@ import os
 import sys
 sys.path.append(os.getcwd())
 sys.path.append("unigarment/train")
-sys.path.append("/home/user/DexGarmentLab-master/DexGarmentLab-master/unigarment/unigarmentmlp")
-sys.path.append("/home/user/DexGarmentLab-master/DexGarmentLab-master/unigarment/unigarmentmlp/merger")
+sys.path.append("/home/pakwa/DexGarmentLab-master/DexGarmentLab-master/unigarment/unigarmentmlp")
+sys.path.append("/home/pakwa/DexGarmentLab-master/DexGarmentLab-master/unigarment/unigarmentmlp/merger")
 
 import wandb
 from tqdm import tqdm

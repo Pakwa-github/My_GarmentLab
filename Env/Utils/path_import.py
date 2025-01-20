@@ -715,7 +715,7 @@ if __name__=="__main__":
         "kit/python/lib/python3.10/site-packages",
         "python_packages",]
 
-    exp="/home/user/.local/share/ov/pkg/isaac-sim-4.0.0"
+    exp="/home/pakwa/.local/share/ov/pkg/isaac-sim-4.0.0"
 
     with open ('path_import.txt', 'w') as f:
         for path in path_list:

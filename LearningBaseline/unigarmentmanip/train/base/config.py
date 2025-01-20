@@ -53,7 +53,7 @@ class record_Config:
 
 class c2f_Config:
     def __init__(self):
-        self.data_dir="/home/user/DexGarmentLab-master/DexGarmentLab-master/data/with_sleeves/cd_processed/mesh_pcd"
+        self.data_dir="/home/pakwa/DexGarmentLab-master/DexGarmentLab-master/data/with_sleeves/cd_processed/mesh_pcd"
         self.garment_data_num=None
         self.train_ratio=1
         self.pair_num=50#how many pairs of correspondence to be sampled

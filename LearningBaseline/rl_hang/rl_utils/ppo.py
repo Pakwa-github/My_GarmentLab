@@ -367,6 +367,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
         callback.on_training_start(locals(), globals())
 
         assert self.env is not None
+        
+        print("start training")
 
         while self.num_timesteps < total_timesteps:
             continue_training = self.collect_rollouts(self.env.num_envs, callback, self.rollout_buffer, n_rollout_steps=self.n_steps)
@@ -385,6 +387,8 @@ class OnPolicyAlgorithm(BaseAlgorithm):
             rollout_data = self.get_rollout_data()
 
             self.train(rollout_data)
+
+            print("training iteration:", iteration)
 
         callback.on_training_end()
 

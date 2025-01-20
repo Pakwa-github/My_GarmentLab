@@ -126,3 +126,28 @@ You can find more details to setup [here](https://garmentlab.readthedocs.io/en/l
   year={2024}
 }
 ```
+
+
+# 2025-01-20 Ubuntu 开始写自己的修改
+我请问了
+第一步，将/home/user改为自己用户名
+第二步，将/home/sim改为自己用户名
+3 rl_hang.py中将from rl_utils.task_defne import ?Task 移到最后
+4 rl_hang.py中 修改config文件名
+5 创造 ~/isaacgarment
+
+7 rl_hang.py中 env.get_demo方法参数中debug=false
+
+8 simulation_env.py中 get_demo方法中
+                      reset方法中删除random=False
+                      scale改为self.garment[0].garment_config.scale
+                      self.ori改为orientation
+                      删除wo_gripper
+
+                      get_all_points方法中
+                      self.ori改为self.garment[0].garment_config.ori
+
+                      step方法中
+                      删除reset方法中random=True
+                      grasp删除wo_gripper
+9 安装 stable-baselines3 和 tensorboard

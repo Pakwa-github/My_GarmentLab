@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/sim/GarmentLab")
+sys.path.append("/home/pakwa/GarmentLab")
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -47,7 +47,7 @@ if __name__=="__main__":
 
     assert mode in ["train", "eval"]
 
-    filename = "/home/sim/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
+    filename = "/home/pakwa/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
 
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
