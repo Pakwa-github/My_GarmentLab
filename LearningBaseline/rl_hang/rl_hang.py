@@ -1,6 +1,6 @@
 import sys
 # sys.path.append("/home/sim/GarmentLab")
-sys.path.append("D:\\sim\\GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -8,9 +8,9 @@ import numpy as np
 import yaml
 import torch
 from rl_utils.rl_env import RlEnvBase
-from rl_utils.task_defne import HangTask
-from rl_utils.simulation_env import AffordanceEnv
 
+from rl_utils.simulation_env import AffordanceEnv
+from rl_utils.task_defne import HangTask
 
 
 def save(
@@ -43,12 +43,12 @@ def save(
 
 if __name__=="__main__":
 
-    mode = "eval"
+    mode = "train"
 
     assert mode in ["train", "eval"]
 
     # filename = "/home/sim/GarmentLab/LearningBaseline/rl_hang/config/config.yaml"
-    filename = "D:\\isaac\\GarmentLab\\LearningBaseline\\rl_hang\\config\\config.yaml"
+    filename = "D:\\isaac\\GarmentLab\\LearningBaseline\\rl_hang\\config\\config_0.yaml"
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
 
@@ -57,14 +57,14 @@ if __name__=="__main__":
     garment_config.ori = np.array(task_config["garment_config"]["garment_ori"])
     garment_config.scale = np.array(task_config["garment_config"]["garment_scale"])
     garment_config.particle_contact_offset = 0.01
-    franka_config = FrankaConfig(franka_num=1, pos=[np.array([-2,0,0.])], ori=[np.array([0,0,0])])
+    franka_config = FrankaConfig(franka_num=1, pos=[np.array([0,0,0.])], ori=[np.array([0,0,0])])
 
     
     rl_env = RlEnvBase(headless=False)
     task = HangTask()
     rl_env.set_task(task, [garment_config], backend="torch")
     env=AffordanceEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
-    succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug =True)
+    succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug =False)
 
 
 
@@ -83,7 +83,7 @@ if __name__=="__main__":
         ent_coef=0.0,
         vf_coef=0.5,
         max_grad_norm=1.0,
-        verbose=1,
+        verbose=2,
         tensorboard_log="./hang",
         normalize_advantage=False,
     )

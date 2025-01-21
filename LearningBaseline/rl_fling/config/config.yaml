@@ -12,7 +12,7 @@ garment_config:
   - -0.28992
   - -0.60931
   # garment_path: /home/sim/GarmentLab/Assets/Garment/Dress/Long_ShortSleeve/DLSS_dress144/DLSS_dress144_obj.usd
-  garment_path: D:\\sim\\GarmentLab\\Assets\\Garment\\Dress\\Long_ShortSleeve\\DLSS_dress144\\DLSS_dress144_obj.usd
+  garment_path: D:\\isaac\\GarmentLab\\Assets\\Garment\\Dress\\Long_ShortSleeve\\DLSS_dress144\\DLSS_dress144_obj.usd
   garment_pos:
   - -0.3138
   - -0.27982
@@ -35,5 +35,5 @@ target_point:
 - -0.48869
 - -0.28995
 - 0.02854
-task_name: hang
+task_name: fling
 block_num: 2

@@ -54,7 +54,7 @@ class AffordanceEnv(BaseEnv):
 
 
         # self.root_path = f"/home/sim/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
-        self.root_path = f"D:\\sim\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
+        self.root_path = f"D:\\isaac\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
         if not os.path.exists(self.root_path):
             os.mkdir(self.root_path)
 
@@ -68,7 +68,7 @@ class AffordanceEnv(BaseEnv):
 
 
     def step(self,action, eval_succ = False):
-        self.reset(random = True)
+        self.reset()
         self.control.robot_reset()
         for _ in range(20):
             self.world.step()
@@ -81,7 +81,7 @@ class AffordanceEnv(BaseEnv):
         point_dist = np.linalg.norm(particles[self.sel_particle_index] - action)
         reward = self.compute_reward(point_dist) if not eval_succ else self.compute_succ(point_dist)
         
-        self.control.grasp(pos=[action],ori=[None],flag=[True], wo_gripper=True)
+        self.control.grasp(pos=[action],ori=[None],flag=[True])
         self.control.move(pos=[self.target_point],ori=[None],flag=[True])
         # self.control.move(pos=[self.target_point+np.array([0.1,0,0])],ori=[None],flag=[True])
         for _ in range(100):
@@ -139,7 +139,7 @@ class AffordanceEnv(BaseEnv):
             return False
 
     def get_demo(self, assign_point, wo_gripper, debug = False, log = False):
-        self.reset(random=False)
+        self.reset()
         self.control.robot_reset()
         for _ in range(20):
             self.world.step()
@@ -151,7 +151,7 @@ class AffordanceEnv(BaseEnv):
             np.savetxt("start_data.txt", start_data)
         dist = np.linalg.norm(start_data - point[None,:], axis = -1)
         self.sel_particle_index = np.argmin(dist, axis=0)
-        self.control.grasp(pos=[point],ori=[None],flag=[True], wo_gripper=wo_gripper)
+        self.control.grasp(pos=[point],ori=[None],flag=[True])
         self.control.move(pos=[self.target_point],ori=[None],flag=[True])
         # self.control.move(pos=[self.target_point+np.array([0.1,0,0])],ori=[None],flag=[True])
         for _ in range(150):
@@ -171,11 +171,11 @@ class AffordanceEnv(BaseEnv):
 
     def get_cloth_in_world_pose(self):
         particle_positions = self.garment[0].get_vertices_positions()
-        position, orientation = self.garment[0].get_world_pose()
+        position, orientation = self.garment[0].garment_mesh.get_world_pose()
         if True:
             # particle_positions = particle_positions + self.pose
-            particle_positions = particle_positions * self.scale
-            particle_positions = self.rotate_point_cloud(particle_positions, self.ori)
+            particle_positions = particle_positions * self.garment[0].garment_config.scale
+            particle_positions = self.rotate_point_cloud(particle_positions, orientation)
             particle_positions = particle_positions + position
             # 
         return particle_positions
@@ -197,7 +197,7 @@ class AffordanceEnv(BaseEnv):
             for _ in range(20):
                 self.world.step()
             point=self.allocate_point(i, save_path=self.trial_path)
-            self.control.grasp(pos=[point],ori=[None],flag=[True], wo_gripper=True)
+            self.control.grasp(pos=[point],ori=[None],flag=[True])
             self.control.move(pos=[self.target_point],ori=[None],flag=[True])
             # self.control.move(pos=[self.target_point+np.array([0.1,0,0])],ori=[None],flag=[True])
             for _ in range(100):
@@ -237,7 +237,7 @@ class AffordanceEnv(BaseEnv):
 
     def get_all_points(self):
         self.selected_pool=self.garment[0].get_vertices_positions()*self.garment[0].garment_config.scale
-        q = euler_angles_to_quat(self.ori)
+        q = euler_angles_to_quat(self.garment[0].garment_config.ori)
         self.selected_pool=self.Rotation(q,self.selected_pool)
         centroid, _ = self.garment[0].garment_mesh.get_world_pose()
         self.selected_pool=self.selected_pool + centroid

@@ -1,6 +1,6 @@
 import sys
 # sys.path.append("/home/sim/GarmentLab")
-sys.path.append("D:\\sim\\GarmentLab")
+sys.path.append("D:\\isaac\\GarmentLab")
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -8,10 +8,10 @@ import numpy as np
 import yaml
 import torch
 from rl_utils.ppo import PPO
-from rl_utils.task_defne import FlingTask
-from rl_utils.simulation_env import SimEnv
-from rl_fling.rl_utils.rl_env import RlEnvBase
 
+from rl_utils.simulation_env import SimEnv
+from rl_utils.rl_env import RlEnvBase
+from rl_utils.task_defne import FlingTask
 
 
 def save(
@@ -42,11 +42,11 @@ def save(
 
 if __name__=="__main__":
 
-    mode = "eval"
+    mode = "train"
     assert mode in ["train", "eval"]
 
     # filename = "/home/sim/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
-    filename = "D:\\sim\\GarmentLab\\LearningBaseline\\rl_fold\\config\\config.yaml"
+    filename = "D:\\isaac\\GarmentLab\\LearningBaseline\\rl_fold\\config\\config.yaml"
 
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
@@ -56,7 +56,7 @@ if __name__=="__main__":
     garment_config.ori = np.array(task_config["garment_config"]["garment_ori"])
     garment_config.scale = np.array(task_config["garment_config"]["garment_scale"])
     garment_config.particle_contact_offset = 0.01
-    franka_config = FrankaConfig(franka_num=2, pos=[np.array([-2,0,0.]),np.array([-4,0,0.])], ori=[np.array([0,0,0]),np.array([0,0,0])])
+    franka_config = FrankaConfig(franka_num=2, pos=[np.array([-1,0,0.]),np.array([-4,0,0.])], ori=[np.array([0,0,0]),np.array([0,0,0])])
 
     
     rl_env = RlEnvBase(headless=False)

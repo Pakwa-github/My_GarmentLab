@@ -55,7 +55,7 @@ class SimEnv(BaseEnv):
 
 
         # self.root_path = f"/home/sim/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
-        self.root_path = f"D:\\sim\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
+        self.root_path = f"D:\\isaac\\isaacgarment\\affordance\\{self.task_name}_{self.garment_name}"
         if not os.path.exists(self.root_path):
             os.mkdir(self.root_path)
 
@@ -150,7 +150,8 @@ class SimEnv(BaseEnv):
             return False
 
     def get_demo(self, assign_point, wo_gripper, debug = False, log = False):
-        self.reset(random=False)
+        # self.reset(random=False)
+        self.reset()
         self.control.robot_reset()
         for _ in range(20):
             self.world.step()
@@ -185,11 +186,14 @@ class SimEnv(BaseEnv):
 
     def get_cloth_in_world_pose(self):
         particle_positions = self.garment[0].get_vertices_positions()
-        position, orientation = self.garment[0].get_world_pose()
+        # position, orientation = self.garment[0].get_world_pose()
+        position, orientation = self.garment[0].garment_mesh.get_world_pose()
         if True:
             # particle_positions = particle_positions + self.pose
-            particle_positions = particle_positions * self.scale
-            particle_positions = self.rotate_point_cloud(particle_positions, self.ori)
+            # particle_positions = particle_positions * self.scale
+            particle_positions = particle_positions * self.scene_config.scale
+            # particle_positions = self.rotate_point_cloud(particle_positions, self.ori)
+            particle_positions = self.rotate_point_cloud(particle_positions, orientation)
             particle_positions = particle_positions + position
             # 
         return particle_positions
