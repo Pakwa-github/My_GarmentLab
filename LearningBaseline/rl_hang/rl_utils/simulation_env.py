@@ -2,8 +2,8 @@ import numpy as np
 from isaacsim import SimulationApp
 import torch
 import os
-
-simulation_app = SimulationApp({"headless": False})
+hl = False
+simulation_app = SimulationApp({"headless": hl})
 import numpy as np
 from omni.isaac.core.utils.types import ArticulationAction
 from omni.isaac.franka import Franka
@@ -22,6 +22,7 @@ from Env.Utils.transforms import quat_diff_rad
 from Env.env.BaseEnv import BaseEnv
 from Env.Garment.Garment import Garment
 from Env.Rigid.Rigid import RigidAfford
+from Env.Rigid.Rigid import RigidAfford_1
 from Env.Robot.Franka.MyFranka import MyFranka
 from Env.env.Control import Control
 from Env.Config.GarmentConfig import GarmentConfig
@@ -47,7 +48,11 @@ class AffordanceEnv(BaseEnv):
             self.garment.append(garment)
             particle_system = garment.get_particle_system()
         self.control=Control(self.world,self.robots,self.garment)
+        
         self.rigid = RigidAfford()
+        # 2025-02-22
+        # self.rigid = RigidAfford_1()
+
         self.target_point = np.array(task_config["target_point"])
         self.task_name = task_config["task_name"]
         self.garment_name = task_config["garment_name"]

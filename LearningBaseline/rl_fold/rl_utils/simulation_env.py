@@ -150,7 +150,7 @@ class SimEnv(BaseEnv):
             return False
 
     def get_demo(self, assign_point, wo_gripper, debug = False, log = False):
-        self.reset(random=False)
+        self.reset()
         self.control.robot_reset()
         for _ in range(20):
             self.world.step()
@@ -165,7 +165,7 @@ class SimEnv(BaseEnv):
         dist_2 = np.linalg.norm(start_data - point_2[None,:], axis = -1)
         self.sel_particle_index_1 = np.argmin(dist_1, axis=0)
         self.sel_particle_index_2 = np.argmin(dist_2, axis=0)
-        self.control.grasp(pos=[point_1, point_2],ori=[None, None],flag=[True, True], wo_gripper=wo_gripper)
+        self.control.grasp(pos=[point_1, point_2],ori=[None, None],flag=[True, True])
         for idx in range(self.target_point.shape[0]):
             self.control.move(pos=[self.target_point[idx,0],self.target_point[idx,1]],ori=[None, None],flag=[True, True])
 
@@ -185,11 +185,11 @@ class SimEnv(BaseEnv):
 
     def get_cloth_in_world_pose(self):
         particle_positions = self.garment[0].get_vertices_positions()
-        position, orientation = self.garment[0].get_world_pose()
+        position, orientation = self.garment[0].garment_mesh.get_world_pose()
         if True:
             # particle_positions = particle_positions + self.pose
-            particle_positions = particle_positions * self.scale
-            particle_positions = self.rotate_point_cloud(particle_positions, self.ori)
+            particle_positions = particle_positions * self.garment[0].garment_config.scale
+            particle_positions = self.rotate_point_cloud(particle_positions, orientation)
             particle_positions = particle_positions + position
             # 
         return particle_positions

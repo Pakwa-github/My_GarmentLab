@@ -60,21 +60,6 @@ class RigidHang():
                                 scale=np.array([0.02,0.02,1.1]))
 
 
-class RigidHangCloth():
-    def __init__(self):
-        rigid_cube = FixedCuboid(prim_path="/World/cube_0",
-                                 name="cube_0",
-                                position=np.array([0.00282,-1.85217,0.5]),
-                                scale=np.array([0.02,0.02,1.0]),
-                                orientation=euler_angles_to_quat(np.array([0,90,0])*np.pi/180))
-
-        visual_cube = VisualCuboid(prim_path="/World/cube_1",
-                                 name="cube_1",
-                                position=np.array([0.00282,-1.97493,0.5]),
-                                scale=np.array([0.02,0.02,0.02]),
-                                visible=False)
-
-
 class RigidHangFling():
     def __init__(self):
         rigid_cube = FixedCuboid(prim_path="/World/cube_0",
@@ -89,6 +74,20 @@ class RigidHangFling():
                                 scale=np.array([0.02,0.02,0.02]),
                                 visible=True)
 
+class RigidHangCloth():
+    def __init__(self):
+        rigid_cube = FixedCuboid(prim_path="/World/cube_0",
+                                 name="cube_0",
+                                position=np.array([0.00282,-1.85217,0.5]),
+                                scale=np.array([0.02,0.02,1.0]),
+                                orientation=euler_angles_to_quat(np.array([0,90,0])*np.pi/180))
+
+        visual_cube = VisualCuboid(prim_path="/World/cube_1",
+                                 name="cube_1",
+                                position=np.array([0.00282,-1.97493,0.5]),
+                                scale=np.array([0.02,0.02,0.02]),
+                                visible=False)
+
 class RigidAfford():
     def __init__(self):
         rigid_cube = FixedCuboid(prim_path="/World/cube_0",
@@ -100,6 +99,20 @@ class RigidAfford():
         visual_cube = VisualCuboid(prim_path="/World/cube_1",
                                  name="cube_1",
                                 position=np.array([0.00282,0.0,0.5]),
+                                scale=np.array([0.02,0.02,0.02]),
+                                visible=True)
+        
+class RigidAfford_1():
+    def __init__(self):
+        rigid_cube = FixedCuboid(prim_path="/World/cube_0",
+                                 name="cube_0",
+                                position=np.array([0.36957,-0.297,0.7]),
+                                scale=np.array([0.02,0.02,0.8]),
+                                orientation=euler_angles_to_quat(np.array([0,90,0])*np.pi/180))
+
+        visual_cube = VisualCuboid(prim_path="/World/cube_1",
+                                 name="cube_1",
+                                position=np.array([0.0282,-0.377,0.5]),
                                 scale=np.array([0.02,0.02,0.02]),
                                 visible=True)
 

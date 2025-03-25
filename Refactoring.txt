@@ -1,0 +1,49 @@
+# 2025-01-20 Ubuntu 开始写自己的修改
+我请问了
+第一步，将/home/user改为自己用户名
+第二步，将/home/sim改为自己用户名
+3 rl_hang.py中将from rl_utils.task_defne import ?Task 移到最后
+4 rl_hang.py中 修改config文件名
+5 创造 ~/isaacgarment
+
+7 rl_hang.py中 env.get_demo方法参数中debug=false
+
+8 simulation_env.py中 get_demo方法中
+                      reset方法中删除random=False
+                      scale改为self.garment[0].garment_config.scale
+                      self.ori改为orientation
+                      删除wo_gripper
+
+                      get_all_points方法中
+                      self.ori改为self.garment[0].garment_config.ori
+
+                      step方法中
+                      删除reset方法中random=True
+                      grasp删除wo_gripper
+
+
+9 安装 stable-baselines3 和 tensorboard
+
+
+# 2025-02-21
+
+10 rl_fold中,ppo.py 中 from rl_model 改为 from rl_utils.rl_model
+
+11 rl_fold的simulation_env.py中
+    get_cloth_in_world_pose方法中
+      position, orientation = self.garment[0].get_world_pose()
+      改为
+      position, orientation = self.garment[0].garment_mesh.get_world_pose()
+
+      下面
+      self.scale 换成 
+      self.ori 换成 orientation
+
+    get_demo方法中
+      self.control.grasp 删除 wo_gripper参数
+
+12 rl_fold 中 ppo.py也是个即把,
+    from vision_encoder 加入路径前缀
+    244行 rollout_buffer.reset 有参数不知道怎么办,真的不知道了
+    
+  不改fold了。

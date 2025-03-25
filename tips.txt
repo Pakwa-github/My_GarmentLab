@@ -1,0 +1,15 @@
+RlEnvBase 可能是一个 通用的强化学习环境管理类，用于控制 Isaac Sim 运行、任务管理等
+
+RlEnvBase 主要是 管理底层仿真（如 Isaac Sim 进程、物理引擎、任务绑定等），
+它并不一定是直接用于训练的环境，而是作为 Isaac Sim 的 接口层。
+
+一模一样的。Isaac Sim 通用仿真环境，多个任务可以复用。
+
+
+AffordanceEnv 似乎是 强化学习训练用的主要环境，用于管理 机器人（Franka）和布料的交互。
+
+AffordanceEnv 可能 封装了 Isaac Gym 相关的强化学习接口，例如：
+    提供 step() 和 reset() 方法（用于 RL 训练）。
+    env.get_demo() 可能是用于获取专家示范数据的函数。
+
+这种设计让 仿真逻辑和 RL 训练分离，提高代码的 模块化和复用性

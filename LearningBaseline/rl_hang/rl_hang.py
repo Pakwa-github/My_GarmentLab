@@ -12,6 +12,7 @@ from rl_utils.simulation_env import AffordanceEnv
 from rl_utils.task_defne import HangTask
 
 
+
 def save(
     model,
     path,
@@ -42,7 +43,7 @@ def save(
 
 if __name__=="__main__":
 
-    mode = "train"
+    mode = "eval"
 
     assert mode in ["train", "eval"]
 
@@ -63,7 +64,11 @@ if __name__=="__main__":
 
     env=AffordanceEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
 
+
+    print("\nget demo...\n")
+    
     succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug=False)
+
 
     from rl_utils.ppo import PPO
 
@@ -85,7 +90,9 @@ if __name__=="__main__":
         normalize_advantage=False,
     )
     
-    print(3)
+    print()
+    print('start training')
+    print()
 
     if mode == "train":
         model.learn(total_timesteps=160)
