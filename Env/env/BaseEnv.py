@@ -112,7 +112,12 @@ class BaseEnv:
         self.total_ticks = len(self.data)
         self.context.add_physics_callback("replay_callback", self.__replay_callback)
         if self.deformable:
-            # self.physics.set_gpu_max_soft_body_contacts(1024000)
+            # 设置 GPU 处理软体（可变形物体）时允许的最大接触点数量，防止由于过多接触点导致内存或性能问题
+            # 原作注释了此条
+            self.physics.set_gpu_max_soft_body_contacts(1024000)
+            # GPU 碰撞堆栈（collision stack）是物理引擎内部用于存储和处理所有碰撞检测结果的数据结构。
+            # 在 GPU 加速的物理计算中，碰撞堆栈会存储所有检测到的碰撞接触数据，并在后续步骤中对这些数据进行处理，
+            # 比如碰撞响应、摩擦计算等。
             self.physics.set_gpu_collision_stack_size(3000000)
             
         

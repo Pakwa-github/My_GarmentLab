@@ -81,8 +81,16 @@ class AffordanceEnv(BaseEnv):
         # point=self.allocate_point(0, save_path=self.trial_path)
         action = action.reshape(-1)
         action += self.centroid
-
         action = self.get_point(action)
+
+
+        # self.centroid 可能是衣物的质心，将 action 偏移到质心位置。
+        # get_point(action) 计算最近的匹配点。
+
+        # 计算 粒子点云 到目标点的距离 point_dist。
+        # compute_reward()：用于计算奖励（目标点越接近，奖励越高）。
+
+
         particles = self.get_cloth_in_world_pose()
         point_dist = np.linalg.norm(particles[self.sel_particle_index] - action)
         reward = self.compute_reward(point_dist) if not eval_succ else self.compute_succ(point_dist)
@@ -245,6 +253,19 @@ class AffordanceEnv(BaseEnv):
         dist = np.linalg.norm(points - position.reshape(1,-1), ord = 2, axis=-1)
         idx = np.argmin(dist)
         return points[idx] 
+
+
+    # 机器人通过以下方式观察到衣物的位置:
+    # 1. 直接读取衣物粒子系统的位置信息
+    # 代码中，衣物是一个布料仿真对象，由粒子系统模拟，它的位置信息可以直接获取：
+    # 这个 get_vertices_positions() 函数会返回衣物所有粒子的位置，也就是衣物在世界坐标系下的点云数据。
+    # 2. 转换到世界坐标系, 衣物的粒子位置默认在其局部坐标系，需要转换到世界坐标系。
+    # 3. 利用 FPS（最远点采样）获取关键点
+    # 衣物可能由大量粒子组成，因此为了减少计算量，代码使用**最远点采样
+    #（FPS, Farthest Point Sampling）**选取关键点：
+    # 这个 fps_np() 方法会从所有粒子中选取 256 个最具代表性的点，使机器人观察到更简化的衣物形态。
+    # 4. 机器人通过 get_obs() 获取衣物状态
+    # 在 get_obs() 方法中，机器人获取所有关键点，并计算它们的质心： 归一化
 
     def get_all_points(self):
         self.selected_pool=self.garment[0].get_vertices_positions()*self.garment[0].garment_config.scale

@@ -33,13 +33,15 @@ import open3d as o3d
 class FoldEnv(BaseEnv):
     def __init__(self,garment_config:GarmentConfig=None,franka_config:FrankaConfig=None,Deformable_Config:DeformableConfig=None):
         BaseEnv.__init__(self,garment=True)
+
         if garment_config is None:
             self.garment_config=[GarmentConfig(ori=np.array([0,0,0]))]
         else:
             self.garment_config=garment_config
         self.garment:list[Garment]=[]
         for garment_config in self.garment_config:
-            self.garment.append(Garment(self.world,garment_config))
+             self.garment.append(Garment(self.world,garment_config))
+        
         if franka_config is None:
             self.franka_config=FrankaConfig()
         else:
@@ -70,12 +72,12 @@ class FoldEnv(BaseEnv):
 if __name__=="__main__":
     env=FoldEnv()
     env.reset()
-    # env.control.grasp([np.array([0.5,-0.1,0.04])],[None],[True])
-    # env.control.move([np.array([0.5,-0.1,0.5])],[None],[True])
-    # env.control.ungrasp([False])
-    # env.control.grasp([np.array([0.5,-0.1,0.04])],[None],[True])
-    # env.control.move([np.array([0.5,-0.1,0.5])],[None],[True])
-    # env.control.ungrasp([False])
+    env.control.grasp([np.array([0.5,-0.1,0.04])],[None],[True])
+    env.control.move([np.array([0.5,-0.1,0.5])],[None],[True])
+    env.control.ungrasp([False])
+    env.control.grasp([np.array([0.5,-0.1,0.04])],[None],[True])
+    env.control.move([np.array([0.5,-0.1,0.5])],[None],[True])
+    env.control.ungrasp([False])
     step=0
     while 1:
         env.step()

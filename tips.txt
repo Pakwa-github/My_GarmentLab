@@ -6,6 +6,7 @@ RlEnvBase 主要是 管理底层仿真（如 Isaac Sim 进程、物理引擎、�
 一模一样的。Isaac Sim 通用仿真环境，多个任务可以复用。
 
 
+
 AffordanceEnv 似乎是 强化学习训练用的主要环境，用于管理 机器人（Franka）和布料的交互。
 
 AffordanceEnv 可能 封装了 Isaac Gym 相关的强化学习接口，例如：
@@ -13,3 +14,89 @@ AffordanceEnv 可能 封装了 Isaac Gym 相关的强化学习接口，例如：
     env.get_demo() 可能是用于获取专家示范数据的函数。
 
 这种设计让 仿真逻辑和 RL 训练分离，提高代码的 模块化和复用性
+
+
+
+这个 OnPolicyAlgorithm 作为 A2C/PPO 的基类，提供：
+
+    经验收集（collect_rollouts()）
+
+    评估（eval_policy()）
+
+    训练框架（learn()）
+
+train() 需要具体算法实现（如 PPO）。
+
+
+
+
+这个 PPO 代码是一个 Proximal Policy Optimization (PPO) 算法的实现，基于 stable-baselines3 进行扩展和修改。代码结构清晰，包含 train() 方法的详细实现，并且添加了 get_rollout_data() 方法来获取 rollout_buffer 的数据。
+代码亮点：
+
+    完整的 PPO 训练流程：
+
+        计算策略损失 (policy_loss)，并采用裁剪 (clip_range) 来限制策略更新的幅度，避免过大的梯度更新。
+
+        计算值函数损失 (value_loss)，并支持裁剪 (clip_range_vf) 以稳定训练。
+
+        计算熵损失 (entropy_loss)，促进探索。
+
+        计算 KL 散度 (approx_kl_div)，用于监控策略变化幅度，并支持 KL 约束 (target_kl) 进行提前停止训练。
+
+    兼容不同的策略 (policy) 和环境 (env)：
+
+        允许自定义 policy（如 MlpPolicy、CnnPolicy、MultiInputPolicy）。
+
+        适用于多种 Gym 动作空间，如 Box、Discrete、MultiDiscrete、MultiBinary。
+
+    优化器管理：
+
+        采用 clip_grad_norm_() 限制梯度范数，防止梯度爆炸。
+
+        允许动态调整学习率 (_update_learning_rate)。
+
+    添加 get_rollout_data() 方法：
+
+        方便访问 rollout_buffer，提取 observations、actions、returns 等数据，简化训练数据管理。
+
+可能的改进：
+
+    优化计算效率：
+
+        values_pred = old_values + th.clamp(values - old_values, -clip_range_vf, clip_range_vf)
+        这里可以用 th.where() 替换 th.clamp() 来减少计算复杂度。
+
+    支持更多的策略约束：
+
+        目前 target_kl 只用于提前终止训练，可以考虑在优化步骤中引入 KL 惩罚项，以进一步稳定策略更新。
+
+    增加日志记录和调试功能：
+
+        目前的 print(f"Early stopping at step {epoch} due to reaching max kl: {approx_kl_div:.2f}") 仅在 verbose >= 1 时打印，可以额外记录 kl_div 变化趋势，以便调试超参数。
+
+总结：
+
+这个 PPO 实现已经非常完善，能够支持 Gym 兼容环境，并且扩展了 stable-baselines3 的功能。可以进一步优化计算效率，并添加更丰富的调试信息，以提升代码的可维护性和训练稳定性。
+
+
+
+
+区别点	            你的 PPO	        stable-baselines3	                    影响
+额外参数	        sim_env	                仅 env	                        可能用于额外模拟环境
+Rollout 数据提取	get_rollout_data()	        没有	                    提供更方便的调试功能
+ratio 计算	        th.exp(log_prob)    th.exp(log_prob - old_log_prob)	    你的实现可能不稳定
+loss 计算	        只用 policy_loss	policy_loss + value_loss + entropy_loss	去掉了值函数和熵损失，可能影响稳定性
+KL 散度计算	        手动存 approx_kl_div	    logger.record("train/approx_kl")	少了 KL 记录
+早停机制	    if kl > 1.5 * target_kl: break	callback 控制	                    可能影响训练完整性
+
+
+
+
+get_demo 方法用于执行示范采集（demonstration collection）
+assign_point: 指定要抓取的点（通常是布料上的一个关键点）
+
+wo_gripper: 是否在无夹爪模式下操作
+
+debug: 是否开启调试模式（等待手动确认）
+
+log: 是否记录布料状态数据
