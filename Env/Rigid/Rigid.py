@@ -106,13 +106,13 @@ class RigidAfford_1():
     def __init__(self):
         rigid_cube = FixedCuboid(prim_path="/World/cube_0",
                                  name="cube_0",
-                                position=np.array([0.36957,-0.297,0.7]),
+                                position=np.array([0.32242,-0.275048,0.7]),
                                 scale=np.array([0.02,0.02,0.8]),
                                 orientation=euler_angles_to_quat(np.array([0,90,0])*np.pi/180))
 
         visual_cube = VisualCuboid(prim_path="/World/cube_1",
                                  name="cube_1",
-                                position=np.array([0.0282,-0.377,0.5]),
+                                position=np.array([0.00282,-1.97493,0.5]),
                                 scale=np.array([0.02,0.02,0.02]),
                                 visible=True)
 
@@ -126,7 +126,7 @@ class RigidVisual():
 
 class RigidStore():
     def __init__(self):
-        add_reference_to_stage(usd_path="/home/pakwa/GarmentLab/Assets/Articulated/cabinet.usd",prim_path="/World")
+        add_reference_to_stage(usd_path="/home/pakwa/GPs/GarmentLab/Assets/Articulated/cabinet.usd",prim_path="/World")
         # self.rigid_form=XFormPrim(
         #     prim_path="/World/cabinet",
         #     name="cabinet",
@@ -140,7 +140,7 @@ class RigidStore():
 
 class RigidTable:
     def __init__(self,world:World):
-        add_reference_to_stage("/home/pakwa/GarmentLab/Assets/Scene/Willow.usd","/World/table")
+        add_reference_to_stage("/home/pakwa/GPs/GarmentLab/Assets/Scene/Willow.usd","/World/table")
         self.table_rigid_prim:RigidPrim=world.scene.add(RigidPrim(
             prim_path="/World/table",
             name="table",

@@ -7,7 +7,7 @@ import numpy as np
 from isaacsim import SimulationApp
 import torch
 import sys
-sys.path.append("/home/luhr/Tactile/IsaacTac/")
+# sys.path.append("/home/luhr/Tactile/IsaacTac/")
 import open3d as o3d
 from omni.isaac.core import World
 from omni.isaac.core.utils.prims import is_prim_path_valid

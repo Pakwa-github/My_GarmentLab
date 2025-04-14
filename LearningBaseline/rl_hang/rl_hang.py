@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/pakwa/GarmentLab")
+sys.path.append("/home/pakwa/GPs/GarmentLab")
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -43,11 +43,11 @@ def save(
 
 if __name__=="__main__":
 
-    mode = "eval"
+    mode = "train"
 
     assert mode in ["train", "eval"]
 
-    filename = "/home/pakwa/GarmentLab/LearningBaseline/rl_hang/config/config_0.yaml"
+    filename = "/home/pakwa/GPs/GarmentLab/LearningBaseline/rl_hang/config/config_0.yaml"
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
 
@@ -96,10 +96,10 @@ if __name__=="__main__":
 
     if mode == "train":
         model.learn(total_timesteps=160)
-        save(model, "hang.ckpt")
+        save(model, "./model/hang_new.ckpt")
 
     else:
-        loaded_data = torch.load("hang.ckpt")
+        loaded_data = torch.load("./model/hang.ckpt")
         model.policy.load_state_dict(loaded_data["policy"])
         model.eval_policy(num_envs=1, n_rollout_steps=30)
 

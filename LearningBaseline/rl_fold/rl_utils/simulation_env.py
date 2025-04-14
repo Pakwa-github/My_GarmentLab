@@ -54,7 +54,7 @@ class SimEnv(BaseEnv):
         self.garment_name = task_config["garment_name"]
 
 
-        self.root_path = f"/home/pakwa/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
+        self.root_path = f"/home/pakwa/GPs/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
         if not os.path.exists(self.root_path):
             os.mkdir(self.root_path)
 
@@ -235,7 +235,7 @@ class SimEnv(BaseEnv):
             self.selected_pool=self.Rotation(q,self.selected_pool)
             centroid, _ = self.garment[0].garment_mesh.get_world_pose()
             self.selected_pool=self.selected_pool + centroid
-            np.savetxt("/home/pakwa/GarmentLab/select.txt",self.selected_pool)
+            np.savetxt("/home/pakwa/GPs/GarmentLab/select.txt",self.selected_pool)
             indices=torch.randperm(self.selected_pool.shape[0])[:800]
             self.selected_pool=self.selected_pool[indices]
             np.save(save_path, self.selected_pool)

@@ -1,5 +1,6 @@
 import sys
-sys.path.append("/home/pakwa/GarmentLab")
+sys.path.append("/home/pakwa/GPs/GarmentLab")
+from rl_utils.simulation_env import SimEnv
 
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig  
@@ -8,8 +9,7 @@ import yaml
 import torch
 from rl_utils.ppo import PPO
 from rl_utils.task_defne import FlingTask
-from rl_utils.simulation_env import SimEnv
-from rl_fling.rl_utils.rl_env import RlEnvBase
+from LearningBaseline.rl_fling.rl_utils.rl_env import RlEnvBase
 
 
 
@@ -44,7 +44,7 @@ if __name__=="__main__":
     mode = "eval"
     assert mode in ["train", "eval"]
 
-    filename = "/home/pakwa/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
+    filename = "/home/pakwa/GPs/GarmentLab/LearningBaseline/rl_fling/config/config.yaml"
 
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
@@ -63,7 +63,7 @@ if __name__=="__main__":
     
     
     env=SimEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
-    succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug = False)
+    succ_data = env.get_demo(task_config["demo_point"], debug = False)
 
 
     model = PPO(

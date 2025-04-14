@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/pakwa/GarmentLab")
+sys.path.append("/home/pakwa/GPs/GarmentLab")
 from Env.env.DeformableEnv import DeformableEnv
 
 from Env.Config.GarmentConfig import GarmentConfig

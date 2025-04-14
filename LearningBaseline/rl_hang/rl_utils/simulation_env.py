@@ -21,7 +21,7 @@ import torch
 from Env.Utils.transforms import quat_diff_rad
 from Env.env.BaseEnv import BaseEnv
 from Env.Garment.Garment import Garment
-from Env.Rigid.Rigid import RigidAfford
+from Env.Rigid.Rigid import RigidAfford, RigidHangCloth
 from Env.Rigid.Rigid import RigidAfford_1
 from Env.Robot.Franka.MyFranka import MyFranka
 from Env.env.Control import Control
@@ -49,16 +49,17 @@ class AffordanceEnv(BaseEnv):
             particle_system = garment.get_particle_system()
         self.control=Control(self.world,self.robots,self.garment)
         
-        self.rigid = RigidAfford()
+        # self.rigid = RigidHangCloth()
+        # self.rigid = RigidAfford()
         # 2025-02-22
-        # self.rigid = RigidAfford_1()
+        self.rigid = RigidAfford_1()
 
         self.target_point = np.array(task_config["target_point"])
         self.task_name = task_config["task_name"]
         self.garment_name = task_config["garment_name"]
 
 
-        self.root_path = f"/home/pakwa/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
+        self.root_path = f"/home/pakwa/GPs/isaacgarment/affordance/{self.task_name}_{self.garment_name}"
         if not os.path.exists(self.root_path):
             os.mkdir(self.root_path)
 
@@ -74,6 +75,7 @@ class AffordanceEnv(BaseEnv):
 
 
     def step(self,action, eval_succ = False):
+        """eval_succ:切换训练和评价的逻辑"""
         self.reset()
         self.control.robot_reset()
         for _ in range(20):
@@ -194,6 +196,8 @@ class AffordanceEnv(BaseEnv):
         position, orientation = self.garment[0].garment_mesh.get_world_pose()
         if True:
             # particle_positions = particle_positions + self.pose
+            # print("particle_positions type:", type(particle_positions))
+            # print("scale type:", type(self.garment[0].garment_config.scale))
             particle_positions = particle_positions * self.garment[0].garment_config.scale
             particle_positions = self.rotate_point_cloud(particle_positions, orientation)
             particle_positions = particle_positions + position
@@ -241,7 +245,7 @@ class AffordanceEnv(BaseEnv):
             self.selected_pool=self.Rotation(q,self.selected_pool)
             centroid, _ = self.garment[0].garment_mesh.get_world_pose()
             self.selected_pool=self.selected_pool + centroid
-            np.savetxt("/home/pakwa/GarmentLab/select.txt",self.selected_pool)
+            np.savetxt("/home/pakwa/GPs/GarmentLab/select.txt",self.selected_pool)
             indices=torch.randperm(self.selected_pool.shape[0])[:800]
             self.selected_pool=self.selected_pool[indices]
             np.save(save_path, self.selected_pool)

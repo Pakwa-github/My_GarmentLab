@@ -1,6 +1,6 @@
 import sys
-sys.path.append("/home/pakwa/GarmentLab/Env")
-sys.path.append("/home/pakwa/GarmentLab")
+sys.path.append("/home/pakwa/GPs/GarmentLab/Env")
+sys.path.append("/home/pakwa/GPs/GarmentLab")
 from Env.env.FoldEnv import FoldEnv
 from Env.Config.DeformableConfig import DeformableConfig
 from Env.Config.FrankaConfig import FrankaConfig
@@ -8,7 +8,7 @@ from Env.Config.GarmentConfig import GarmentConfig
 import numpy as np
 
 if __name__=="__main__":
-    garment_config=GarmentConfig(usd_path="/home/pakwa/GarmentLab/Assets/Garment/Tops/NoCollar_Lsleeve_FrontClose/TNLC_Dress057/TNLC_Dress057_obj.usd",pos=np.array([0,-0.95,0.3]),ori=np.array([0,0,0]),particle_contact_offset=0.01)
+    garment_config=GarmentConfig(usd_path="/home/pakwa/GPs/GarmentLab/Assets/Garment/Tops/NoCollar_Lsleeve_FrontClose/TNLC_Dress057/TNLC_Dress057_obj.usd",pos=np.array([0,-0.95,0.3]),ori=np.array([0,0,0]),particle_contact_offset=0.01)
     env=FoldEnv(garment_config=[garment_config],
                 franka_config=FrankaConfig(ori=[np.array([0,0,-np.pi/2])]))
     env.reset()

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("/home/pakwa/GarmentLab")
+sys.path.append("/home/pakwa/GPs/GarmentLab")
 from Env.env.StoreEnv import StoreEnv
 from Env.Config.GarmentConfig import GarmentConfig
 from Env.Config.FrankaConfig import FrankaConfig

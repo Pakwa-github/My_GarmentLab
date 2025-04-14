@@ -38,7 +38,7 @@ class DeformableEnv(BaseEnv):
 if __name__=="__main__":
     deformable_config_list=[]
     deformable_config1=DeformableConfig(pos=np.array([-1,1,0.5]),youngs_modulus=1e3)
-    deformable_config2=DeformableConfig(pos=np.array([0,1,0.5]),youngs_modulus=5e3)
+    deformable_config2=DeformableConfig(pos=np.array([0,1,0.5]),youngs_modulus=5e3)  # 杨氏模量
     deformable_config3=DeformableConfig(pos=np.array([1,1,0.5]))
     deformable_config_list.append(deformable_config1)
     deformable_config_list.append(deformable_config2)

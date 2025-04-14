@@ -1,4 +1,6 @@
 import sys
+
+from termcolor import cprint
 sys.path.append("/home/pakwa/GPs/GarmentLab")
 
 from Env.Config.GarmentConfig import GarmentConfig
@@ -6,17 +8,15 @@ from Env.Config.FrankaConfig import FrankaConfig
 import numpy as np
 import yaml
 import torch
-
 from rl_utils.rl_env import RlEnvBase
-from rl_utils.simulation_env import SimEnv
 
-from rl_utils.ppo import PPO
-from rl_utils.task_defne import FoldTask
+from rl_utils.simulation_env import AffordanceEnv
+from rl_utils.task_defne import HangTask
 
 
 
 def save(
-    model:PPO,
+    model,
     path,
     exclude = None,
     include = None,
@@ -49,8 +49,7 @@ if __name__=="__main__":
 
     assert mode in ["train", "eval"]
 
-    filename = "/home/pakwa/GPs/GarmentLab/LearningBaseline/rl_fold/config/config.yaml"
-
+    filename = "/home/pakwa/GPs/GarmentLab/LearningBaseline/rl_hang/config/config_0.yaml"
     with open(filename, 'r') as file:
         task_config = yaml.safe_load(file)
 
@@ -59,20 +58,20 @@ if __name__=="__main__":
     garment_config.ori = np.array(task_config["garment_config"]["garment_ori"])
     garment_config.scale = np.array(task_config["garment_config"]["garment_scale"])
     garment_config.particle_contact_offset = 0.01
-    franka_config = FrankaConfig(franka_num=2, pos=[np.array([-2,0,0.]),np.array([-4,0,0.])], ori=[np.array([0,0,0]),np.array([0,0,0])])
-    # franka_config = FrankaConfig(franka_num=2, pos=[np.array([0.5,0.5,0.]),np.array([0.5,-0.5,0.])], ori=[np.array([0,0,-np.pi/2]),np.array([0,0,np.pi/2])])
-
+    franka_config = FrankaConfig(franka_num=1, pos=[np.array([0,0.2,0.])], ori=[np.array([0,0,0])])
     
     rl_env = RlEnvBase(headless=False)
-    task = FoldTask()
+    task = HangTask()
     rl_env.set_task(task, [garment_config], backend="torch")
-    
-    
-    env=SimEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
-    
-    succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug = False)
 
-    
+    env=AffordanceEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
+
+
+    cprint("\nget demo...\n", "green")
+    succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug=False)
+
+
+    from rl_utils.ppo import PPO
 
     model = PPO(
         "MlpPolicy",
@@ -88,19 +87,17 @@ if __name__=="__main__":
         vf_coef=0.5,
         max_grad_norm=1.0,
         verbose=1,
-        tensorboard_log="./fold",
+        tensorboard_log="./hang",
         normalize_advantage=False,
     )
-
-
+    cprint('start training',"green")
     if mode == "train":
         model.learn(total_timesteps=160)
-        save(model, "fold.ckpt")
+        save(model, "./model/sofa.ckpt")
 
     else:
-        loaded_data = torch.load("fold.ckpt")
-        model.policy_1.load_state_dict(loaded_data["policy_1"])
-        model.policy_2.load_state_dict(loaded_data["policy_2"])
+        loaded_data = torch.load("./model/sofa.ckpt")
+        model.policy.load_state_dict(loaded_data["policy"])
         model.eval_policy(num_envs=1, n_rollout_steps=30)
 
     
