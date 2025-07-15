@@ -64,7 +64,7 @@ if __name__=="__main__":
 
     env=AffordanceEnv(garment_config=[garment_config], franka_config=franka_config, task_config=task_config)
 
-
+    env.replay("Assets/Replays/20240805-08_41_57.npy")
     print("\nget demo...\n")
     
     succ_data = env.get_demo(task_config["demo_point"], wo_gripper=True, debug=False)
